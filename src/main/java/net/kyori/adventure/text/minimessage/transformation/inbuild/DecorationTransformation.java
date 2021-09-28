@@ -55,6 +55,7 @@ public final class DecorationTransformation extends Transformation {
   }
 
   private TextDecoration decoration;
+  private boolean flag = true;
 
   private DecorationTransformation() {
   }
@@ -67,6 +68,10 @@ public final class DecorationTransformation extends Transformation {
 
     if (this.decoration == null) {
       throw new ParsingException("Don't know how to turn '" + name + "' into a decoration", this.argTokenArray());
+    }
+
+    if (args.size() == 1 && "false".equals(args.get(0).value())) {
+      this.flag = false;
     }
   }
 
@@ -97,7 +102,7 @@ public final class DecorationTransformation extends Transformation {
 
   @Override
   public Component apply() {
-    return Component.empty().decorate(this.decoration);
+    return Component.empty().decoration(this.decoration, this.flag);
   }
 
   @Override
